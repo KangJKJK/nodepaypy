@@ -46,7 +46,7 @@ async def render_profile_info(proxy):
             response = call_api(DOMAIN_API["SESSION"], {}, proxy)
             valid_resp(response)
             account_info = response["data"]
-            if account_info.get("USER_ID"):
+            if account_info.get("uid"):
                 save_session_info(proxy, account_info)
                 await start_ping(proxy)
             else:
@@ -99,7 +99,7 @@ async def ping(proxy):
 
     try:
         data = {
-            "id": account_info.get("USER_ID"),
+            "id": account_info.get("uid"),
             "browser_id": browser_id,
             "timestamp": int(time.time())
         }

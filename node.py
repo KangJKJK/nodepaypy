@@ -7,6 +7,7 @@ import os
 from loguru import logger
 
 # 상수
+USER_ID = os.getenv('userid')
 NP_TOKEN = os.getenv('nptoken')
 PING_INTERVAL = 30  # 초
 RETRIES = 60  # 핑 실패에 대한 전역 재시도 카운터
@@ -98,7 +99,7 @@ async def ping(proxy):
 
     try:
         data = {
-            "id": account_info.get("uid"),
+            "id": USER_ID,
             "browser_id": browser_id,
             "timestamp": int(time.time())
         }

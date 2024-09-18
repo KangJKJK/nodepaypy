@@ -46,7 +46,7 @@ async def render_profile_info(proxy):
             response = call_api(DOMAIN_API["SESSION"], {}, proxy)
             valid_resp(response)
             account_info = response["data"]
-            if account_info.get("uid"):
+            if account_info.get("USER_ID"):
                 save_session_info(proxy, account_info)
                 await start_ping(proxy)
             else:

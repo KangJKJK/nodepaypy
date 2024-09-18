@@ -3,10 +3,11 @@ import requests
 import json
 import time
 import uuid
+import os
 from loguru import logger
 
 # 상수
-NP_TOKEN = "$nptoken"
+NP_TOKEN = os.getenv('nptoken')
 PING_INTERVAL = 30  # 초
 RETRIES = 60  # 핑 실패에 대한 전역 재시도 카운터
 

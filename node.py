@@ -46,19 +46,23 @@ async def render_profile_info(proxy):
             response = call_api(DOMAIN_API["SESSION"], {}, proxy)
             valid_resp(response)
             account_info = response["data"]
+
             if account_info.get("uid"):
-                # UID 비교
-                if account_info["uid"] == USER_ID:
-                    save_session_info(proxy, account_info)
-                    await start_ping(proxy)
-                else:
-                    logger.error(f"UID 불일치: 환경변수 USER_ID={USER_ID}, API UID={account_info['uid']}")
-                    handle_logout(proxy)
+                # API에서 받은 UID를 사용
+                save_session_info(proxy, account_info)
+                await start_ping(proxy)
             else:
+                logger.error("API 응답에서 UID를 찾을 수 없음.")
                 handle_logout(proxy)
         else:
-            account_info = np_session_info
-            await start_ping(proxy)
+            # np_session_info가 None이 아닐 경우, account_info를 설정
+            if 'uid' in np_session_info:
+                account_info = np_session_info
+                await start_ping(proxy)
+            else:
+                logger.error(f"세션 정보에 UID가 없음: {np_session_info}")
+                handle_logout(proxy)
+
     except Exception as e:
         logger.error(f"{proxy}에서 render_profile_info 중 오류 발생: {e}")
         error_message = str(e)

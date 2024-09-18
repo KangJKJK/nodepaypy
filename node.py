@@ -99,7 +99,7 @@ async def ping(proxy):
 
     try:
         data = {
-            "id": USER_ID,
+            "id": account_info.get("USER_ID"),
             "browser_id": browser_id,
             "timestamp": int(time.time())
         }

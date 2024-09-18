@@ -47,8 +47,13 @@ async def render_profile_info(proxy):
             valid_resp(response)
             account_info = response["data"]
             if account_info.get("uid"):
-                save_session_info(proxy, account_info)
-                await start_ping(proxy)
+                # UID 비교
+                if account_info["uid"] == USER_ID:
+                    save_session_info(proxy, account_info)
+                    await start_ping(proxy)
+                else:
+                    logger.error(f"UID 불일치: 환경변수 USER_ID={USER_ID}, API UID={account_info['uid']}")
+                    handle_logout(proxy)
             else:
                 handle_logout(proxy)
         else:
